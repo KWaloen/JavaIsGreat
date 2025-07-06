@@ -45,3 +45,7 @@ async def chat(request: ChatRequest):
     )
     reply_text = completion.choices[0].message.content.strip()
     return ChatResponse(response=reply_text)
+
+@app.get("/")
+async def read_root():
+    return {"hello": "world"}
