@@ -23,7 +23,7 @@ class ChatResponse(BaseModel):
 app = FastAPI()
 
 app.add_middleware(
-    CORSMiddelware,
+    CORSMiddleware,
     allow_origins=["https://www.kwal.no"],
     allow_methods=["*"]
 )
