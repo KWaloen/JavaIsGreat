@@ -1,0 +1,12 @@
+services:
+  javaisgreat_backend:
+    build:
+      context: .
+    ports:
+      - "4000:8000"
+    restart: always
+
+    environment:
+      DEBUG: "False"
+      SECRET_KEY: "${SECRET_KEY}"
+      ALLOWED_HOSTS: "jig.server.kwal.no"
