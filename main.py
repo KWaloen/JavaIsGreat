@@ -1,8 +1,9 @@
 from fastapi import FastAPI
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from openai import OpenAI
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
+from typing import List
 import os
 
 load_dotenv()
@@ -11,11 +12,12 @@ client = OpenAI(
   api_key=os.environ['OPENAI_API_KEY'],  
   )
 
-class ChatRequest(BaseModel):
-    user_message: str = Field(..., alias="user message")
+class Message(BaseModel):
+    role: str
+    content: str
 
-    class Config: 
-        allow_population_by_field_name = True
+class ChatRequest(BaseModel):
+    messages: List[Message]
 
 class ChatResponse(BaseModel):
     response: str
@@ -37,9 +39,7 @@ async def chat(request: ChatRequest):
    
     completion = client.chat.completions.create(
         model="gpt-4o-mini",
-        messages=[
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": request.user_message}],
+        messages=[{"role": "system", "content": SYSTEM_PROMPT}] + [m.dict() for m in request.messages],
         max_tokens=150,
         temperature=0.7,
     )
