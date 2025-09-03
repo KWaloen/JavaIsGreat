@@ -40,7 +40,6 @@ async def chat(request: ChatRequest):
     completion = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[{"role": "system", "content": SYSTEM_PROMPT}] + [m.dict() for m in request.messages],
-        max_tokens=150,
         temperature=0.7,
     )
     reply_text = completion.choices[0].message.content.strip()
